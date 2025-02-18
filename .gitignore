@@ -1,0 +1,4 @@
+**/*.env
+apikey.json
+**/key.txt
+sales_onboarding/*.txt

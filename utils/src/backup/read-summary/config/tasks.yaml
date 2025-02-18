@@ -1,0 +1,26 @@
+database_task:
+  description: >
+    Understand the user query and translate that to an appropriate SQL query performed
+    against the database in question. There is only one table, the name of the table is
+    accounts. The query is {query} 
+  expected_output: >
+    The results of the SQL query should be then converted to the English language.
+  agent: database_analyst
+  output_file: db-out.txt
+
+reader_task:
+  description: >
+    Read the content of the PDF document located at {pdf_path}.
+    The contents of the document should be passed to the downstream summarisation task.
+  expected_output: >
+    Text extracted from the PDF Document.
+  agent: reader_agent 
+  output_file: read.txt
+ 
+summariser_task:
+  description: >
+    Summarise the provided text from the upstream read task using the specified LLM Model
+  expected_output: >
+    A concise and accurate summary of the document's content.
+  agent: summariser_agent 
+  output_file: summarise.txt

@@ -1,0 +1,25 @@
+This document contains all the information pertaining to the Australian Broadcasting Corporation for the year 2024.
+
+Key activities included the deployment of cloud pak for integration and business automation in the months of August and October respectively.
+
+MQ was being used a Managed File Transfer solution transferring documents served by Filenet's content repository solution. The transfer of files was done state wise, this allowed teams scattered across Australia to collaborate with one another seamlessly.
+
+Key personnel from the client were:
+
+1) James Clerk Maxwell
+2) Heinrich Hertz
+3) Michael Faraday
+4) Max Plank
+5) Ludwig Boltzmann
+
+
+James was the chief technology officer, Heinrich was vice chief technology officer, directly reporting to James and frequently filling in during his absence. This was a common occurence, James was often found in his lab developing his so called "equations". Legend has it he is till toiling away at his lab.
+
+Michael was the Lead Engineer. He was a bit of an isolationalist, he spent much of his time in his so called "cage" working tirelessly behind the scenes. To everyone's shock, he was largely unharmed when a bolt of lightning devestated his home.
+
+Boltzmann, the chief Financial officer, was a loose cannon so to speak, often causing a ruckus and bringing out the "worst" in the poor soul who happened to chance his way. 
+
+Plank, the business analyst, was largely ignored for the most part, only called upon when needed. His colleagues, namely Boltzmann, mocked him for being smaller in stature compared to the average man.
+
+
+Currently, Michael and his team have procured a number of trial licenses as a migration is underway. The procurement team, headed by Boltzmann, have engaged Marwan to purchase production licenses of both cloud paks in the next quarter. They have sought approval from James, ultimately giving up before asking Heinrich.

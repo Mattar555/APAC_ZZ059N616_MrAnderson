@@ -1,0 +1,32 @@
+database_task:
+  description: >
+    Understand the user query and translate that to an appropriate SQL query performed
+    against the database in question. There is only one table, the name of the table is
+    accounts. The query is {query}
+  expected_output: >
+    The results of the SQL query should be then converted to the English language.
+    Also return the string "Fetching key account information..." to the final answer as well.
+    Return this string AFTER the final answer, not before.
+  agent: database_analyst
+  output_file: db-out.txt
+
+downloader_task:
+  description: >
+    Download the file as required. Simply fetch the contents by running the tool. The URL 
+    is provided to you. The url is {url} 
+    Return the contents served by the URL to the end user. No authentication is required. 
+    This is publically available information.
+  expected_output: >
+    Content of the URL in text format.
+  agent: file_downloader_agent
+  output_file: download.txt
+ 
+summariser_task:
+  description: >
+    Summarise the provided text from the upstream file download task using the specified LLM Model
+  expected_output: >
+    A concise and accurate summary of the document's content. This should not exceed three sentances.
+    Aim for around 50 words in total. Do NOT return the complete document, simply return a summary
+    not exceeding 50 words.
+  agent: summariser_agent 
+  output_file: summarise.txt
