@@ -1,0 +1,54 @@
+services:
+  salesforce:
+    image: "docker.io/library/postgres"
+    container_name: sales-db 
+    ports:
+       - "5432:5432"
+    environment:
+       POSTGRES_USER: salesuser
+       POSTGRES_PASSWORD: salesuserpassword
+       POSTGRES_DB: sales
+    volumes:
+      - ./init.simple.sql:/docker-entrypoint-initdb.d/init.sql
+  box:
+    image: "docker.io/library/nginx"
+    container_name: web
+    ports:
+    - "8080:80"
+    volumes:
+      - ./site-content/:/usr/share/nginx/html
+  mailserver:
+    image: "docker.io/mailhog/mailhog"
+    container_name: mailserver
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+  analytics:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:8.17.2"
+    container_name: elastic
+    ports:
+      - "9200:9200"
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: false
+      xpack.security.enrollment.enabled: false
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+    networks:
+      - elastic
+  business-intelligence:
+    image: "docker.elastic.co/kibana/kibana:8.17.2"
+    container_name: kibana
+    environment:
+       ELASTICSEARCH_HOSTS: http://elastic:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - elastic
+
+
+networks:
+  elastic:
+    driver: bridge

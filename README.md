@@ -1,7 +1,116 @@
 # README
 
 
-## Notes
+## TLDR
+
+This section is dedicated to the lazy individuals who wish to simply run this application without necessarily reading the rest of the document.
+
+### TLDR - Python Env Setup
+
+Note, this guides assumes a MacOS.
+
+At the time of writing, Python versions >= 3.10 and < 3.13 work. You may have, say, 3.13 installed locally and as such, may need to downgrade. There exists a few utilities out there in relation to Python version management. I'll be using "pyenv" in this case. Feel free to use your own version manager.
+
+Install pyenv via Brew:
+
+```
+brew install pyenv
+```
+
+Init Pyenv:
+
+```
+pyenv init
+source ~/.zshrc # change to ~/.bashrc if not using zsh
+```
+
+Set your desired Python version for the shell:
+
+```
+pyenv shell 3.12.7
+source ~/.zshrc # change to ~/.bashrc if not using zsh
+```
+
+Install the necessary tools:
+
+```
+pip install 'crewai[tools]' # New Installs
+pip install --upgrade crewai crewai-tools # Existing Installs
+```
+
+Install additional dependencies:
+
+```
+uv pip install psycopg2
+uv pip install panel
+uv pip install PyPDF2
+uv pip install 'crewai[tools]'
+uv pip install elasticsearch
+pip install panel
+pip install PyPDF2
+pip install psycopg2
+pip install python-dotenv
+pip install litellm
+pip install elasticsearch
+```
+
+Your resultant .env file should, as a result of completing the configurations above, resemble the following:
+
+```
+WATSONX_API_KEY=KEY_HERE
+WATSONX_PROJECT_ID=ID_HERE
+WATSONX_URL=URL_HERE
+```
+
+This file should be located at the directory titled "sales_onboarding"
+
+
+### Upstream Provider Setup
+
+
+A WatsonX.ai instance needs to be setup. Refer to the section titled "Setting up your watsonx project" within the following [link](https://developer.ibm.com/tutorials/awb-build-ai-agents-integrating-crewai-watsonx/).
+
+The TechZone instance name was "watsonx ai plus Discovery". The collection URL is invalid hence the exclusion from this README. I used the Dallas region, it appears to be the most stable.
+
+Not stated in the link provided, you need to, in addition to creating a project, associate said project with an instance of a WatsonX AI runtime. Navigate to your project, click on the "Services and Integrations" tab, select the "IBM Services" tab, then associate a "WatsonX AI Runtime" service with this project. One should already be created for you once the instance is provisioned successfully from Techzone.
+
+
+### Containers/Services
+
+Assuming you have Docker/Podman installed locally, run the following command:
+
+```
+[docker | podman] compose -f utils/compose/docker-compose.yml up --detach 
+```
+
+This should spin up 5 containers with the following names:
+
+1) mailserver
+2) web
+3) elastic
+4) kibana
+5) sales-db
+
+
+### Crew Program
+
+Run the following command:
+
+```
+panel serve sales_onboarding/sales/sales_onboarding/main.py
+```
+
+See the video in the next section for a working example.
+
+### Video
+
+
+https://github.ibm.com/anz-integration-techsales/anz-ts-agentic-ai/assets/361705/445f097e-84d2-4ed2-8ad7-6abd63630830
+
+
+
+
+## Detailed Notes
 
 
 ## Prerequisites
@@ -14,27 +123,18 @@ The TechZone instance name was "watsonx ai plus Discovery". The collection URL i
 
 Not stated in the link provided, you need to, in addition to creating a project, associate said project with an instance of a WatsonX AI runtime. Navigate to your project, click on the "Services and Integrations" tab, select the "IBM Services" tab, then associate a "WatsonX AI Runtime" service with this project. One should already be created for you once the instance is provisioned successfully from Techzone.
 
-### Serper
-
-Sign up to Serper Dev [here](https://www.serper.dev) to obtain an API Key.
-
-Create a ".env" file locally with the following entry:
-
-```
-SERPER_API_KEY=YOUR_KEY_HERE
-```
 
 ### Env file
 
-Your resultant .env file should, as a result of completing the configurations above, resemble the following:
+Create a .env file should, as a result of completing the configurations above, resemble the following:
 
 ```
 WATSONX_API_KEY=KEY_HERE
 WATSONX_PROJECT_ID=ID_HERE
 WATSONX_URL=URL_HERE
-SERPER_API_KEY=SERPER_KEY_HERE
 ```
 
+Pleace this file in the "sales_onboarding" directory.
 
 ## Installation and Setup
 
@@ -42,7 +142,7 @@ Note, the following assumes a MacOS workstation.
 
 It is important to note CrewAI requires, at the time of writing, Python >= 3.10 and < 3.13. See [here](https://docs.crewai.com/installation) for more information.
 
-I had Python 3.13.1 and so was obtaining installation errors. You can use pyenv to simplify the Python version management process in your workstation, as described [here])https://dev.to/imkven/how-to-set-up-crewai-on-macos-a-step-by-step-guide-48d8). Note, you will need to install pyenv first:
+I had Python 3.13.1 and so was obtaining installation errors. You can use pyenv to simplify the Python version management process in your workstation, as described [here](https://dev.to/imkven/how-to-set-up-crewai-on-macos-a-step-by-step-guide-48d8). Note, you will need to install pyenv first:
 
 ```
 brew install pyenv
@@ -61,9 +161,10 @@ Now, create your project as such:
 ```
 crewai create crew <project_name>
 ```
+
 Choose the Watson option when prompted, and input the API key, project ID and URL when required. You can leave them blank and manaully populate the dotenv file at a later stage if so desired.
 
-Note, place the dotenv file at the projct root directory. A directory with name given by the <projct_name> directory upon successful execution of the command above. The dotenv fil should be placed there.
+Note, place the dotenv file at the projct root directory. A directory with name given by the <projct_name> directory upon successful execution of the command above. The dotenv file should be placed there.
 
 
 Install additional tools as such:
@@ -213,10 +314,7 @@ report_writer = Agent(
 Note the llm parameter passed to the agents above, custom_llm is the llm object created above. Each LLM, depending on the provider, expects certain variables be passed in, either directly or supplied via a dotenv file. You will have to refer to your provider documentation for more information above. You may refer to the links provided in the references section, subsection "WatsonX-CrewAI Integration" for example implementations.
 
 
-
-
-
-This begs the question, what is the default LLM, if no LLM is provided? The [getting started example](https://docs.crewai.com/quickstart#build-your-first-crewai-agent) requires, as given in Step 7, an OpenAI API Key, with environment variable "OPENAI_API_KEY".
+This begs the question, what is the default LLM, if no LLM is provided? The [getting started example](https://docs.crewai.com/quickstart#build-your-first-crewai-agent) requires, as given in Step 7, an OpenAI API Key, with environment variable "OPENAI_API_KEY". OpenAPI is the default assumed provider.
 
 
 
@@ -241,25 +339,50 @@ Ensure the following module is installed:
 
 ```
 uv pip install psycopg2
+pip install psycopg2
 ```
 
 Remember, use uv to perform pip installs, as recommended.
 
+Note, this SQL server will effectively mock IBM's instance of Salesforce.
 
 
-### Read + Summarise
+### WebServer
 
 Execute the following:
 
 ```
-uv pip install PyPDF2
+./utils/nginx/init-webserver.sh
 ```
 
-TODO: Fill this out, referencing this [video](https://www.youtube.com/watch?v=adLwGpjYXTg) as necessary.
+This is a simple Nginx webserver serving static content. This will mock the cloud object storage provided by Box.
 
 
+### Mailserver
 
-### User Interface
+Run the following command to spin up the mailserver:
+
+```
+./utils/mailhog/run-mailhog.sh
+```
+
+Mailhog is a Web and API based SMTP testing mailserver used to mock sending/receving of outbound/inbound emails.
+
+
+### Elasticsearch & Kibana
+
+Remember, both Elasticsearch and Kibana will effctively mock our analytics and query engines respectively.
+
+Execute the following command:
+
+```
+./utils/elasticsearch-kibana/init.sh
+./utils/elasticsearch-kibana/deploy-elastic.sh # Wait a minute or two before deploying Kibana. ES is a big boy.
+./utils/elasticsearch-kibana/deploy-kibana.sh
+```
+
+
+### CrewAI Program
 
 Reference video can be found [here](https://www.youtube.com/watch?v=Rp4xO0XLfzU&t=382s)
 
@@ -269,6 +392,14 @@ Run the following command:
 uv pip install panel
 pip install panel
 ```
+
+Now, run the program:
+
+```
+panel serve sales_onboarding/src/sales_onboarding/main.py
+```
+
+Navigate to http://localhost:5006/main
 
 ## References
 
