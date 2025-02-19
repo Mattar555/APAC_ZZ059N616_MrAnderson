@@ -105,7 +105,10 @@ See the video in the next section for a working example.
 ### Video
 
 
-https://github.ibm.com/anz-integration-techsales/anz-ts-agentic-ai/assets/361705/445f097e-84d2-4ed2-8ad7-6abd63630830
+
+
+
+https://github.com/user-attachments/assets/8a9ffe4f-1572-4fc0-ac3a-2d0454461361
 
 
 
