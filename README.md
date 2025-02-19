@@ -92,6 +92,13 @@ This should spin up 5 containers with the following names:
 5) sales-db
 
 
+Note, once finished, run the following program to decomission the services:
+
+``` 
+podman compose -f utils/compose/docker-compose.yml down
+```
+
+
 ### Crew Program
 
 Run the following command:
@@ -99,6 +106,10 @@ Run the following command:
 ```
 panel serve sales_onboarding/sales/sales_onboarding/main.py
 ```
+
+A nice extension to this would entail dockerising this application above and running it amongst the other applications found in the docker compose file, bearing in mind order would then be crucial, as it would depend upon the readyness of the other components.
+
+
 
 See the video in the next section for a working example.
 
